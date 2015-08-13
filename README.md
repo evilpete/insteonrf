@@ -5,7 +5,9 @@
 This code is meant as a proof of concept for the encoding and decoding of the Insteon RF protocol
 
 
-For Protocol  Information see [Doc/pkt_format.txt](Doc/pkt_format.txt)
+For Protocol Information see [Doc/pkt_format.txt](Doc/pkt_format.txt)
+
+Cracking the CRC :  [Reverse-Engineering a CRC](http://make-it-hack.blogspot.com/2015/08/reverse-engineering-crc.html)
 
 
 ----
@@ -24,8 +26,8 @@ There is also support for using the
 
 ## Data Format ##
 
-Raw data files are either signed or unsigned 8 bit IQ [Inphase Quadrature](https://en.wikipedia.org/wiki/In-phase_and_quadrature_components) data  
-Intermediate data is exchanged as ASCII strings of  "1" and "0" with packets broken up with newlines,
+Raw data files are either signed or unsigned 8 bit IQ [Inphase Quadrature](https://en.wikipedia.org/wiki/In-phase_and_quadrature_components) data 
+Intermediate data is exchanged as ASCII strings of "1" and "0" with packets broken up with newlines,
 empty and lines starting with '#' are ignored or treated as meta data.
 
 Thus removing any problems with bit or byte order as well as bit or word alignment.
@@ -47,7 +49,7 @@ Thus removing any problems with bit or byte order as well as bit or word alignme
     send_comm.py        generates Insteon packet in ASCII binary
 
     rf_send.py	        transmits data with Rfcat input ASCII binary
-    hackrf_xmit.sh      script to transmit with hack-rf      
+    hackrf_xmit.sh      script to transmit with hack-rf
 
     rf_reciv.py	        receive data and demodulate with Rfcat ( outputs ASCII binary )
     rtl_reciv.sh        receive data with rtl-sdr dongle ( output unsigned 8 bit )
