@@ -1,1 +1,3 @@
-A colletion of one-off testing scripts - kept for historical purposes
+An initial attempt at breaking apart the scripts into a maintainable library.
+
+TODO: Pretty much everything
