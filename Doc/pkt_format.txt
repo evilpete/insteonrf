@@ -108,16 +108,17 @@ Extended packets have a 2nd CRC
 
     For bytes 7 though 22:
 	take the sun of all the values 
-	take two's complement Operator ( 'flipping' the bits )
+	take two's complement Operator ( 'flipping' the bits)
 	logical AND with 0xFF ( for a single byte result )
 
 
        r = 0 ;
-       for(i=7;i<22;i++) {
-          r += dat[i] ;
-       }
+       for(i=7;i<22;i++)
+           r += dat[i] ;
+           
        r = ~r ;
        r += 1 ;
        r = r & 0xFF ;
+       
 
 =====
