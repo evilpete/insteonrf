@@ -99,3 +99,5 @@ should print :
 >
 >  `./send_comm.py -d 163FE5 -s 132580 13 00 | ./rf_send.py`
 
+
+[![Analytics](https://ga-beacon.appspot.com/UA-65834265-1/evilpete/insteonrf)]
