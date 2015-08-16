@@ -44,7 +44,7 @@ Thus removing any problems with bit or byte order as well as bit or word alignme
 
     rf_clip             reads IQ input and breaks data into packets with super lame squelch algorithm
     print_pkt.py        reads ASCII binary decodes Insteon packet
-    split_pkt.py        Verbose Diag tool for looing at packet I/O
+    split_pkt.py        Verbose Diag tool for looking at packet I/O
 
     send_comm.py        generates Insteon packet in ASCII binary
 
@@ -78,7 +78,7 @@ S/plot*.png         plots of FSK demod
 
 Assuming you successfully compiled the demodulator 
 
-   ./fsk2_demod < Dat/41802513110D2711018C00.dat  | ./print_pkt.py
+   ./fsk2_demod -U < Dat/41802513110D2711018C00.dat  | ./print_pkt.py
 
 should print :
 
