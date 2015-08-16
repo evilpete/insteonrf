@@ -32,68 +32,12 @@ fsk_demod:  $(OBJECTS_DIR)/fsk_demod.o
 rf_clip:  $(OBJECTS_DIR)/rf_clip.o
 	$(CC) $(LDFLAGS) -O -pipe $< -o $@
 
-findclip:  $(OBJECTS_DIR)/findclip.o $(OBJECTS_DIR)/fclips.o
-	$(CC) $(LDFLAGS) -O -pipe $(OBJECTS_DIR)/findclip.o $(OBJECTS_DIR)/fclips.o -o findclip
-
-demods:  $(OBJECTS_DIR)/demods.o $(OBJECTS_DIR)/fclips.o $(OBJECTS_DIR)/smooth.o
-	$(CC) $(LDFLAGS) -O -pipe $> -o demods
-
-
-########## 16 bit
-
-demod:  $(OBJECTS_DIR)/demod.o $(OBJECTS_DIR)/fclips.o $(OBJECTS_DIR)/smooth.o
-	$(CC) $(LDFLAGS) -O -pipe $^ -o demod
-
-$(OBJECTS_DIR)/demods.o: demods.c  iq.h
-	echo $@  $<
-	$(CC) -g -c -DIQSAMPLESIZE=16 $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/demod.o: demod.c  iq.h
-	$(CC) -g -c -DIQSAMPLESIZE=16 $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/fclips.o: fclips.c  iq.h
-	$(CC) -g -c -DIQSAMPLESIZE=16 $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/findclip.o: findclip.c  iq.h
-	echo $@  $<
-	echo findclip $<
-	$(CC) -g -c -DIQSAMPLESIZE=16 $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/smooth.o: smooth.c  iq.h
-	$(CC) -g -c -DIQSAMPLESIZE=16 $(CFLAGS) -o $@ $<
 
 ########## 8 bit
 
 $(OBJECTS_DIR)/rf_clip.o: rf_clip.c
 	$(CC) -g  -c $(CFLAGS) -o $@ $<
 
-$(OBJECTS_DIR)/fsk_demod.o: fsk_demod.c
-	$(CC) -g  -c $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/demods8.o: demods.c  iq.h
-	$(CC) -g  -DIQSAMPLESIZE=8 -c $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/demod8.o: demod.c  iq.h
-	$(CC) -g  -DIQSAMPLESIZE=8 -c $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/fclips8.o: fclips.c  iq.h
-	$(CC) -g  -DIQSAMPLESIZE=8 -c $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/findclip8.o: findclip.c  iq.h
-	$(CC) -g  -DIQSAMPLESIZE=8 -c $(CFLAGS) -o $@ $<
-
-$(OBJECTS_DIR)/smooth8.o: smooth.c  iq.h
-	$(CC) -g -DIQSAMPLESIZE=8 -c $(CFLAGS) -o $@ $<
-
-
-findclip8:  $(OBJECTS_DIR)/findclip8.o $(OBJECTS_DIR)/fclips8.o
-	$(CC) $(LDFLAGS) -O -pipe $^ -o findclip8
-
-demod8:  $(OBJECTS_DIR)/demod8.o $(OBJECTS_DIR)/fclips8.o $(OBJECTS_DIR)/smooth8.o
-	$(CC) $(LDFLAGS) -O -pipe $^ -o demod8
-
-demods8:  $(OBJECTS_DIR)/demods8.o $(OBJECTS_DIR)/fclips8.o $(OBJECTS_DIR)/smooth8.o
-	$(CC) $(LDFLAGS) -O -pipe $^ -o demods8
 
 ##########
 
@@ -103,9 +47,6 @@ $(OBJECTS_DIR)/convertdat.o: convertdat.c iq.h
 convertdat: $(OBJECTS_DIR)/convertdat.o $(OBJECTS_DIR)/fclips.o 
 	$(CC) $(LDFLAGS) -O -pipe $^ -o $@
 
-
-test: findclip $(TESTWAV)
-	./findclip $(TESTWAV) | less
 
 $(OBJECTS_DIR):
 	@mkdir $(OBJECTS_DIR)
@@ -122,7 +63,3 @@ p:
 	echo  CC ${CC}
 
 clean:
-	@/bin/rm -f ./findclip $(OBJECTS_DIR)/findclip.o ./findclip8 $(OBJECTS_DIR)/findclip8.o
-	@/bin/rm -f ./demod $(OBJECTS_DIR)/demod.o ./demod8 $(OBJECTS_DIR)/demod8.o
-	@/bin/rm -f $(OBJECTS_DIR)/smooth8.o $(OBJECTS_DIR)/smooth.o
-	@/bin/rm -f $(OBJECTS_DIR)/fclips8.o $(OBJECTS_DIR)/fclips.o

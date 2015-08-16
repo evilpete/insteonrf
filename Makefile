@@ -63,9 +63,6 @@ $(OBJECTS_DIR)/fsk2_mod.o: ${SOURCE_DIR}/fsk2_mod.c
 $(OBJECTS_DIR)/fsk2_demod.o: ${SOURCE_DIR}/fsk2_demod.c
 	$(CC) -g  -c $(CFLAGS) -o $@ $<
 
-$(OBJECTS_DIR)/fsk_demod.o: ${SOURCE_DIR}/fsk_demod.c
-	$(CC) -g  -c $(CFLAGS) -o $@ $<
-
 ##########
 
 $(OBJECTS_DIR)/insteon_lib.o: ${SOURCE_DIR}/insteon_lib.c
@@ -88,21 +85,20 @@ $(OBJECTS_DIR):
 	@mkdir $(OBJECTS_DIR)
 
 lint:
-	@lint $(LINTFLAGS) ${SOURCE_DIR}/findclip.c
-	@lint $(LINTFLAGS) ${SOURCE_DIR}/demod.c
-	@lint $(LINTFLAGS) ${SOURCE_DIR}/fclips.c
-	@lint $(LINTFLAGS) ${SOURCE_DIR}/fclips.c
+	@lint $(LINTFLAGS) ${SOURCE_DIR}/fsk2_demod.c
+	@lint $(LINTFLAGS) ${SOURCE_DIR}/rf_clip.c
+	@lint $(LINTFLAGS) ${SOURCE_DIR}/fsk2_mod.c
+	@lint $(LINTFLAGS) ${SOURCE_DIR}/convert.c
+	@lint $(LINTFLAGS) ${SOURCE_DIR}/conver_lib.c
 
 
 p:
 	echo UNAME ${UNAME}
 	echo OSTYPE ${OSTYPE}
-	echo  CC ${CC}
+	echo CC ${CC}
 
 clean:
-	@/bin/rm -f ./findclip $(OBJECTS_DIR)/findclip.o ./findclip8 $(OBJECTS_DIR)/findclip8.o
-	@/bin/rm -f ./demod $(OBJECTS_DIR)/demod.o ./demod8 $(OBJECTS_DIR)/demod8.o
-	@/bin/rm -f $(OBJECTS_DIR)/fclips8.o $(OBJECTS_DIR)/fclips.o
+	@/bin/rm -rf $(OBJECTS_DIR)
 
 realclean:
 	@/bin/rm -rf $(OBJECTS_DIR)
