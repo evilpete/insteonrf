@@ -36,14 +36,15 @@ Giving the fields the values :
 >     Cmd Arg   = BF = Level 191/255 ( 70% )
 >     CRC       = 5F
  
-Each byte (X) is encoded as 26 bits: 
+Each byte (X) is encoded as 28 bits: 
 >     '11' followed by
->     5 bit index number (manchester encoded
->     8 bit byte (manchester encoded
+>     5 bit index number (manchester encoded)
+>     8 bit byte (manchester encoded)
  
 All values are written in LSB format (Least Significant Bit first)
+
 The first byte is always transmitted with a index of 32 ( 11111 )
-all following bytes are transmitted with a decrementing count
+all following bytes are transmitted with a decrementing index count with the final byte with index 0
  
     Dat   index dat         LSB index dat     manchester                     '11' + manchester
     03 -> 11111 00000011 -> 11111 11000000 -> 0101010101 0101101010101010 -> 1101010101010101101010101010
@@ -62,14 +63,11 @@ all following bytes are transmitted with a decrementing count
  
 bit values are inverted/swapped ( that is 1=0 and 0=1 ) before transmittion
  
-The resulting Full packet looks like 
- 
-    preamble + encoded bytes ( inverted )
+The resulting Full 372 bit packet, with preable and inverted looks like: ( spaces added to preserve readablity )
  
     `10101010 + 1101010101010101101010101010 + 1101011001100110011010010101 + 1110011001100101010101011010 + 1101101001101001011001101010 + 1110101001101010101010101001 + 1101010110100110011010011010 + 1110010110100101101001101010 + 1101100110100110101001101010 + 1110100110100101010101011001 + 1101011010100101011001100101 + 1110011010101010101010101010 + 1101101010101010101010101010 + 1110101010101001100110011001`
  
- 
-##Packet CRC generation ##
+###Packet CRC generation ###
  
 Every RF packet has a CRC byte appended to the end :
  
@@ -87,7 +85,7 @@ if in C :
 >     r = 0 ;
 >     for(i=0;i<dat_len;i++) {
 >        r ^= dat[i] ;
->       x = ( r ^ ( r << 1 ))
+>        x = ( r ^ ( r << 1 ))
 >        x = x & 0x0F
 >        r ^= ( x << 4 )
 >     }
@@ -101,12 +99,12 @@ or more succinctly :
  
  
  
-## Extended Packet CRC ##
+### Extended Packet CRC ###
  
-Extended packets have a 2nd CRC, the checksum is based on the twos complement of the sum of byte 7 though 22 ( cmd byte, opt byte and data bytes )
+Extended packets have a 2nd CRC for the data payload at byte 22, the checksum is based on the twos complement of the sum of byte 7 though 21 ( cmd byte, opt byte and data bytes )
  
 the algorithm is :
->     For bytes 7 though 22:
+>     For bytes 7 though 21:
 >         take the sun of all the values 
 >         take two's complement Operator ( 'flipping' the bits)
 >         logical AND with 0xFF ( for a single byte result )
