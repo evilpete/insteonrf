@@ -78,11 +78,11 @@ S/plot*.png         plots of FSK demod
 
 Assuming you successfully compiled the demodulator 
 
-   ./fsk2_demod -U < Dat/41802513110D2711018C00.dat  | ./print_pkt.py
+    ./fsk2_demod -U < Dat/41802513110D2711018C00.dat  | ./print_pkt.py
 
 should print :
 
-   41 : 80 25 13 : 11 0D 27 : 11 01 8C 00           crc 8C
+    41 : 80 25 13 : 11 0D 27 : 11 01 8C 00           crc 8C
 
 ### Receive ###
  
