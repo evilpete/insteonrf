@@ -29,17 +29,17 @@ To transmit the short packet :
         `0B, E5, 3F, 16, 80, 25, 13, 11, BF, 5F, 00, 00, AA`
  
 Giving the fields the values :
->    Flag      = OB = Direct Message Max_Hops=3 Hops_Left=2
->    To Addr   = 163FE5
->    From Addr = 132580
->    Command   = 11 = "Turn On"
->    Cmd Arg   = BF = Level 191/255 ( 70% )
->    CRC       = 5F
+>     Flag      = OB = Direct Message Max_Hops=3 Hops_Left=2
+>     To Addr   = 163FE5
+>     From Addr = 132580
+>     Command   = 11 = "Turn On"
+>     Cmd Arg   = BF = Level 191/255 ( 70% )
+>     CRC       = 5F
  
 Each byte (X) is encoded as 26 bits: 
-    '11' followed by
-    5 bit index number (manchester encoded
-    8 bit byte (manchester encoded
+>     '11' followed by
+>     5 bit index number (manchester encoded
+>     8 bit byte (manchester encoded
  
 All values are written in LSB format (Least Significant Bit first)
 The first byte is always transmitted with a index of 32 ( 11111 )
@@ -77,27 +77,27 @@ Insteon documents the CRC as 7-bit linear-feedback shift register but is not a t
  
 the algorithm is :
  
->    For each byte:
->        Xor crc with the current byte
->        Xor lower nibble with itself shifted left by one
->            then Xor result to upper nibble
+>     For each byte:
+>         Xor crc with the current byte
+>         Xor lower nibble with itself shifted left by one
+>             then Xor result to upper nibble
  
  
 if in C :
->    r = 0 ;
->    for(i=0;i<dat_len;i++) {
->       r ^= dat[i] ;
+>     r = 0 ;
+>     for(i=0;i<dat_len;i++) {
+>        r ^= dat[i] ;
 >       x = ( r ^ ( r << 1 ))
->       x = x & 0x0F
->       r ^= ( x << 4 )
->    }
+>        x = x & 0x0F
+>        r ^= ( x << 4 )
+>     }
  
 or more succinctly :
->    r = 0 ;
->    for(i=0;i<dat_len;i++) {
->       r ^= dat[i] ;
->       r ^= (( r ^ ( r << 1 )) & 0x0F) << 4 ;
->    }
+>     r = 0 ;
+>     for(i=0;i<dat_len;i++) {
+>        r ^= dat[i] ;
+>        r ^= (( r ^ ( r << 1 )) & 0x0F) << 4 ;
+>     }
  
  
  
@@ -106,19 +106,19 @@ or more succinctly :
 Extended packets have a 2nd CRC, the checksum is based on the twos complement of the sum of byte 7 though 22 ( cmd byte, opt byte and data bytes )
  
 the algorithm is :
->    For bytes 7 though 22:
->        take the sun of all the values 
->        take two's complement Operator ( 'flipping' the bits)
->        logical AND with 0xFF ( for a single byte result )
+>     For bytes 7 though 22:
+>         take the sun of all the values 
+>         take two's complement Operator ( 'flipping' the bits)
+>         logical AND with 0xFF ( for a single byte result )
  
 or in C :
->    r = 0 ;
->    for(i=7;i<22;i++) {
->        r += dat[i] ;
->    }
+>     r = 0 ;
+>     for(i=7;i<22;i++) {
+>         r += dat[i] ;
+>     }
 >
->    r = ~r ;
->    r += 1 ;
->    r = r & 0xFF ;
+>     r = ~r ;
+>     r += 1 ;
+>     r = r & 0xFF ;
  
 ----
