@@ -156,6 +156,7 @@ def extract_pkt_data(dat) :
         try:
             dm = demanchester( dat[i:i+26] )
         except Exception, err :
+            dm = None
             if len(results) >= 10 :
                 if be_verbose :
                     print "demanchester Err, ignoring"
@@ -165,21 +166,23 @@ def extract_pkt_data(dat) :
                     print results
                     print " ".join([ "{:02X}".format(j) for j in results ])
                     raise
+        if dm:
+            if len(dm) < 13 :
+                break
+            i = i + 26
+            count_field = int(dm[4::-1], 2)
+            dat_field   = int(dm[:4:-1], 2)
 
-        if len(dm) < 13 :
-            break
-        i = i + 26
-        count_field = int(dm[4::-1], 2)
-        dat_field   = int(dm[:4:-1], 2)
+            results.append(dat_field)
 
-        results.append(dat_field)
-
-    if debug >1  :
-        print "{:2d} : {:5s} ({:2d}) : {:s} {:02X}".format(
-        j,
-        dm[4::-1], count_field,
-        dm[:4:-1], dat_field)
-        j = j + 1
+            if debug >1  :
+                print "{:2d} : {:5s} ({:2d}) : {:s} {:02X}".format(
+                j,
+                dm[4::-1], count_field,
+                dm[:4:-1], dat_field)
+                j = j + 1
+        else:
+            results = ['no data']
 
     return results
 
