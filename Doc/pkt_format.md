@@ -1,6 +1,6 @@
 # Insteon RF Packet encoding format #
 ## Packet Fields ##
-###The short Packet Fields ###
+### The short Packet Fields ###
 >     Flags     = byte 0
 >     To Addr   = byte 1 2 3
 >     From Addr = byte 4 5 6
@@ -10,7 +10,7 @@
 >     pad 00    = byte 10 11 ( optional )
 >     pad AA    = byte 12    ( optional )
     
-###Extended packet Fields ###
+### Extended packet Fields ###
 Extended packets are the same as short packets but have 14 byte payload instead of 2 byte and have an extra CRC for the data.
 
 >     Flags     = byte 0
@@ -23,7 +23,7 @@ Extended packets are the same as short packets but have 14 byte payload instead 
 >     Pkt CRC   = byte 23
 >     Pad AA    = byte 24 through 31 ( optional )
  
-##Example Packet encoding##
+## Example Packet encoding ##
  
 To transmit the short packet :
         `0B, E5, 3F, 16, 80, 25, 13, 11, BF, 5F, 00, 00, AA`
@@ -67,7 +67,7 @@ The resulting Full 372 bit packet, with preable and inverted looks like: ( space
  
     `10101010 + 1101010101010101101010101010 + 1101011001100110011010010101 + 1110011001100101010101011010 + 1101101001101001011001101010 + 1110101001101010101010101001 + 1101010110100110011010011010 + 1110010110100101101001101010 + 1101100110100110101001101010 + 1110100110100101010101011001 + 1101011010100101011001100101 + 1110011010101010101010101010 + 1101101010101010101010101010 + 1110101010101001100110011001`
  
-###Packet CRC generation ###
+### Packet CRC generation ###
  
 Every RF packet has a CRC byte appended to the end :
  
