@@ -133,13 +133,35 @@ a map can be made
 07 0000 0111 -> 90 1001 0000
 08 0000 1000 -> 80 1000 0000
 
+The Solution:
 
-r = 0 ;
-for(i=0;i<dat_len;i++) {
-    r ^= dat[i] ;
-    r ^= (( r ^ ( r << 1 )) & 0x0F) << 4 ;
-}
+    for each by in data :
 
+    0000 0011     checksum = checksum ^ byte    : Xor result with for each byte
+    XXXX 0011     checksum & 0x0F               : take lower nibble
+         0110     0011 << 1                     : shift lower nibble left 1 bit and xor with itself
+         0101     0011 ^ 0110                   : Xor lower nibble with shifted nubble
+    0101 0000     checksum ^  (0101 << 4)       : Xor with upper nibble of checksum
+
+In Code :
+        r = 0 ;
+        for(i=0;i<dat_len;i++) {
+            r ^= dat[i] ;
+            r ^= (( r ^ ( r << 1 )) & 0x0F) << 4 ;
+        }
+
+
+or here is a simpler implementation using a lookup table:
+
+        lsfr_table = [0x00, 0x30, 0x60, 0x50, # 0 1 2 3
+              0xC0, 0xF0, 0xA0, 0x90, # 4 5 6 7
+              0x80, 0xB0, 0xE0, 0xD0, # 8 9 A B
+              0x40, 0x70, 0x20, 0x10] # C D E 
+
+        r = 0
+        for i in dat[:crc_len] :
+            r ^= i
+            r ^= lsfr_table[ r & 0x0F ]
 
 ——
 
