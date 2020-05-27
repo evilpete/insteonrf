@@ -51,8 +51,8 @@ Thus removing any problems with bit or byte order as well as bit or word alignme
     hackrf_xmit.sh      script to transmit with hack-rf
 
     rfcat_reciv.py	        receive data and demodulate with Rfcat ( outputs ASCII binary )
-    <!-- rtl_reciv.sh        receive data with rtl-sdr dongle ( output unsigned 8 bit ) -->
-    <!-- hackrf_reciv.sh     receive data with hackrf ( output signed 8 bit )**  -->
+    <!--- rtl_reciv.sh        receive data with rtl-sdr dongle ( output unsigned 8 bit ) --->
+    <!--- hackrf_reciv.sh     receive data with hackrf ( output signed 8 bit )**  --->
     ** hackrf_reciv requires mod hackrf_transfer to write to stdout 
 
 python libs (work in progress ) :  
