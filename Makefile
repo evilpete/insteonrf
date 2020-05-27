@@ -40,13 +40,12 @@ ${OUT_DIR}:
 fsk2_mod: $(OBJECTS_DIR)/fsk2_mod.o 
 	$(CC) $(LDFLAGS) -O2 -pipe $+ -o $@ -lm -lliquid
 
-fsk2_demod: $(OBJECTS_DIR)/fsk2_demod.o $(OBJECTS_DIR)/fxpt_atan2.o
-	$(CC) $(LDFLAGS) -O2 -pipe $+ -o $@ -lm
-#	$(CC) $(LDFLAGS) -O2 -pipe $< $(OBJECTS_DIR)/fxpt_atan2.o -o $@ -lm
+# fsk2_demod: $(OBJECTS_DIR)/fsk2_demod.o $(OBJECTS_DIR)/fxpt_atan2.o
+# 	$(CC) $(LDFLAGS) -O2 -pipe $+ -o $@ -lm
+##	$(CC) $(LDFLAGS) -O2 -pipe $< $(OBJECTS_DIR)/fxpt_atan2.o -o $@ -lm
 
 rf_clip:  $(OBJECTS_DIR)/rf_clip.o
 	$(CC) $(LDFLAGS) -O2 -pipe $< -o $@
-
 
 
 ########## 8 bit

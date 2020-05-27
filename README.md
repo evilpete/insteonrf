@@ -39,7 +39,6 @@ Thus removing any problems with bit or byte order as well as bit or word alignme
 
 ## Files ##
 
-    fsk2_demod          a generic FCK2 demodulator 
     fsk2_mod            a generic FCK2 modulator  (BROKEN)
 
     rf_clip             reads IQ input and breaks data into packets with super lame squelch algorithm
@@ -48,12 +47,12 @@ Thus removing any problems with bit or byte order as well as bit or word alignme
 
     send_comm.py        generates Insteon packet in ASCII binary
 
-    rf_send.py	        transmits data with Rfcat input ASCII binary
+    rfcat_send.py	        transmits data with Rfcat input ASCII binary
     hackrf_xmit.sh      script to transmit with hack-rf
 
-    rf_reciv.py	        receive data and demodulate with Rfcat ( outputs ASCII binary )
-    rtl_reciv.sh        receive data with rtl-sdr dongle ( output unsigned 8 bit )
-    hackrf_reciv.sh     receive data with hackrf ( output signed 8 bit )**  
+    rfcat_reciv.py	        receive data and demodulate with Rfcat ( outputs ASCII binary )
+    <!-- rtl_reciv.sh        receive data with rtl-sdr dongle ( output unsigned 8 bit ) -->
+    <!-- hackrf_reciv.sh     receive data with hackrf ( output signed 8 bit )**  -->
     ** hackrf_reciv requires mod hackrf_transfer to write to stdout 
 
 python libs (work in progress ) :  
@@ -64,7 +63,7 @@ python libs (work in progress ) :
 >  gen_packet.py        generate or process packets
 
 
-S/plot*.png         plots of FSK demod
+S/plot\*.png         plots of FSK demod
 
 ----
 
@@ -76,30 +75,38 @@ S/plot*.png         plots of FSK demod
 
 ## Example use ##
 
-Assuming you successfully compiled the demodulator 
+rtl_433 -s 1024k  -F json -r  g004_915M_1024k.cu8
 
-    ./fsk2_demod -U < Dat/41802513110D2711018C00.dat  | ./print_pkt.py
+```json
+{"time" : "@0.072767s", "model" : "Insteon", "pkt_type" : "Group Cleanup Direct Message", "from_id" : "2B7811", "to_id" : "226B3F", "command" : "13 01 ", "extended" : 0, "hops" : "3 / 3", "formatted" : "4F : 226B3F : 2B7811 : 13 01  79", "mic" : "CRC", "payload" : "4F3F6B2211782B130179"}
+{"time" : "@0.072767s", "model" : "Insteon", "pkt_type" : "Group Cleanup Direct Message", "from_id" : "2B7811", "to_id" : "226B3F", "command" : "13 01 ", "extended" : 0, "hops" : "3 / 2", "formatted" : "4B : 226B3F : 2B7811 : 13 01  BD", "mic" : "CRC", "payload" : "4B3F6B2211782B1301BD"}
+{"time" : "@0.072767s", "model" : "Insteon", "pkt_type" : "Group Cleanup Direct Message", "from_id" : "2B7811", "to_id" : "226B3F", "command" : "13 01 ", "extended" : 0, "hops" : "3 / 1", "formatted" : "47 : 226B3F : 2B7811 : 13 01  F1", "mic" : "CRC", "payload" : "473F6B2211782B1301F1"}
+{"time" : "@0.072767s", "model" : "Insteon", "pkt_type" : "Group Cleanup Direct Message", "from_id" : "2B7811", "to_id" : "226B3F", "command" : "13 01 ", "extended" : 0, "hops" : "3 / 0", "formatted" : "43 : 226B3F : 2B7811 : 13 01  35", "mic" : "CRC", "payload" : "433F6B2211782B130135"}
+```
 
-should print :
 
-    41 : 80 25 13 : 11 0D 27 : 11 01 8C 00           crc 8C
 
 ### Receive ###
  
->  `./rtl_reciv.sh | ./fsk2_demod | ./print_pkt.py` 
+use [rtl_433](https://github.com/merbanan/rtl_433) to recive and decode
+
+>  rtl_433 -s 1024k -R 154 -F json
+
+use [rtl_433](https://github.com/merbanan/rtl_433) to recive raw data and decode with [./swpkt.py](swpkt.py)
+
+>  rtl_433 -X 'n=Insteon_F16,m=FSK_PCM,s=110,l=110,t=15,g=20000,r=20000,invert,match={16}0x6666' | [./swpkt.py](swpkt.py)
+
 >
->  `./rf_reciv.py | ./print_pkt.py`
+>  `./rfcat_reciv.py | ./print_pkt.py`
 >
->  `./hackrf_reciv.sh | ./fsk2_demod | ./print_pkt.py`  
->  ( requires mod to hackrf_transfer to write to stdout )
 
 ### Transmit ###
 
 >  `./send_comm.py -r 07 : E5 3F 16 : 80 25 13 : 11 BF 13 00 00 AA | ./fsk2_mod | ./hackrf_xmit.sh`
 >
->  `./send_comm.py -r 07 : E5 3F 16 : 80 25 13 : 11 BF 13 00 00 AA | ./rf_send.py`
+>  `./send_comm.py -r 07 : E5 3F 16 : 80 25 13 : 11 BF 13 00 00 AA | ./rfcat_send.py`
 >
->  `./send_comm.py -d 163FE5 -s 132580 13 00 | ./rf_send.py`
+>  `./send_comm.py -d 163FE5 -s 132580 13 00 | ./rfcat_send.py`
 
 
 [![Analytics](https://ga-beacon.appspot.com/UA-65834265-1/evilpete/insteonrf)]
